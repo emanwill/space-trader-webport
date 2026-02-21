@@ -2,7 +2,6 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import SpriteImage from "./SpriteImage";
 import { ShipImage } from "./ShipImage";
 
 function App() {
@@ -30,8 +29,15 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <SpriteImage spriteId="scarabs" />
-      <div className="flex flex-row gap-2">
+      <ShipImage
+        shipType="ship8"
+        hull={40}
+        hullMax={50}
+        shield={130}
+        shieldMax={150}
+        scale={2.5}
+      />
+      <div className="flex flex-row gap-8 mt-2">
         <ShipImage
           shipType="ship9"
           hull={50}

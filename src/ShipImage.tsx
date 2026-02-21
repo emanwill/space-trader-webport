@@ -77,6 +77,8 @@ export function ShipImage(p: {
   scale?: number;
   backgroundColor?: string;
 }) {
+  const scale = p.scale ?? 1;
+
   // Dragonfly (df) ship has a unique shield graphic
   const shieldThickness = p.shipType === "df" ? 16 : 2;
 
@@ -90,22 +92,26 @@ export function ShipImage(p: {
       ? Math.floor((p.shield * (shipW + 2 * shieldThickness)) / p.shieldMax)
       : 0;
 
-  const dmgClipL = shipMarginL;
-  const dmgClipR = frame.w - (shipMarginL + dmgWidth);
-  const shieldClipL = shipMarginL + shipW + shieldThickness - shieldWidth;
-  const shieldClipR = frame.w - (shipMarginL + shipW + shieldThickness);
+  const dmgClipL = shipMarginL * scale;
+  const dmgClipR = (frame.w - (shipMarginL + dmgWidth)) * scale;
+  const shieldClipL =
+    (shipMarginL + shipW + shieldThickness - shieldWidth) * scale;
+  const shieldClipR =
+    (frame.w - (shipMarginL + shipW + shieldThickness)) * scale;
 
   return (
     <div
       style={{
         position: "relative",
-        width: spritesheet.frames[p.shipType].frame.w,
-        height: spritesheet.frames[p.shipType].frame.h,
-        backgroundColor: p.backgroundColor ?? "#FFFFFF",
+        width: frame.w * scale,
+        height: frame.h * scale,
+        flexShrink: 0,
+        backgroundColor: p.backgroundColor ?? "#ffffff",
       }}
     >
       <SpriteImage
         spriteId={hullImg}
+        scale={scale}
         style={{
           position: "absolute",
           top: 0,
@@ -115,6 +121,7 @@ export function ShipImage(p: {
       {shieldWidth > 0 ? (
         <SpriteImage
           spriteId={shieldImg}
+          scale={scale}
           style={{
             position: "absolute",
             top: 0,
@@ -126,6 +133,7 @@ export function ShipImage(p: {
       {dmgWidth > 0 ? (
         <SpriteImage
           spriteId={dmgImg}
+          scale={scale}
           style={{
             position: "absolute",
             top: 0,

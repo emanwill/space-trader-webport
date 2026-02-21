@@ -28,6 +28,7 @@ export default function SpriteImage({
         backgroundPosition: `-${x * scale}px -${y * scale}px`,
         backgroundSize: `${sheetW * scale}px ${sheetH * scale}px`,
         backgroundRepeat: "no-repeat",
+        imageRendering: "pixelated",
         ...style,
       }}
     />
