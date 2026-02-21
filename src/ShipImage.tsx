@@ -30,19 +30,19 @@ const shipSprites: {
   sm: ["sm", "smd", "sm", "smd"],
   ship10: ["ship10", "ship10d", "ship10s", "ship10sd"],
   ship9: ["ship9", "ship9d", "ship9s", "ship9sd"],
-  ship8: ["blank", "blank", "blank", "blank"],
-  ship7: ["blank", "blank", "blank", "blank"],
-  ship6: ["blank", "blank", "blank", "blank"],
-  ship5: ["blank", "blank", "blank", "blank"],
-  ship4: ["blank", "blank", "blank", "blank"],
-  ship3: ["blank", "blank", "blank", "blank"],
-  ship2: ["blank", "blank", "blank", "blank"],
+  ship8: ["ship8", "ship8d", "ship8s", "ship8sd"],
+  ship7: ["ship7", "ship7d", "ship7s", "ship7sd"],
+  ship6: ["ship6", "ship6d", "ship6s", "ship6sd"],
+  ship5: ["ship5", "ship5d", "ship5s", "ship5sd"],
+  ship4: ["ship4", "ship4d", "ship4s", "ship4sd"],
+  ship3: ["ship3", "ship3d", "ship3s", "ship3sd"],
+  ship2: ["ship2", "ship2d", "ship2s", "ship2sd"],
   ship1: ["ship1", "ship1d", "ship1", "ship1d"],
   ship0: ["ship0", "ship0d", "ship0", "ship0d"],
-  scorp: ["blank", "blank", "blank", "blank"],
-  scarab: ["blank", "blank", "blank", "blank"],
-  mantis: ["blank", "blank", "blank", "blank"],
-  df: ["blank", "blank", "blank", "blank"],
+  scorp: ["scorp", "scorpd", "scorps", "scorpsd"],
+  scarab: ["scarab", "scarabd", "scarabs", "scarabsd"],
+  mantis: ["mantis", "mantisd", "mantiss", "mantissd"],
+  df: ["df", "dfd", "dfs", "dfsd"],
   bottle: ["bottle", "bottled", "bottle", "bottled"],
 };
 
@@ -60,7 +60,7 @@ const shipImageOffsets: {
   ship8: [2, 0, 60, 0], // termite
   ship9: [2, 0, 60, 0], // wasp
   sm: [7, 0, 49, 0], // space monster
-  df: [21, 0, 22, 0], // dragonfly
+  df: [21, 0, 22, 0], // dragonfly (shield is +16 to either side)
   mantis: [15, 0, 34, 0], // mantis
   scarab: [7, 0, 49, 0], // scarab
   bottle: [9, 0, 46, 0], // bottle
@@ -74,17 +74,26 @@ export function ShipImage(p: {
   hullMax: number;
   shield: number;
   shieldMax: number;
+  scale?: number;
+  backgroundColor?: string;
 }) {
-  const [x, , w] = shipImageOffsets[p.shipType];
+  // Dragonfly (df) ship has a unique shield graphic
+  const shieldThickness = p.shipType === "df" ? 16 : 2;
 
-  const startDamage = Math.floor(x + w - (p.hull * w) / p.hullMax);
+  const [hullImg, dmgImg, shieldImg] = shipSprites[p.shipType];
+  const frame = spritesheet.frames[p.shipType].frame;
+  const [shipMarginL, , shipW] = shipImageOffsets[p.shipType];
 
-  const startShield =
-    x + w + 2 - (p.shieldMax > 0 ? (p.shield * (w + 4)) / p.shieldMax : 0);
+  const dmgWidth = Math.floor(((p.hullMax - p.hull) * shipW) / p.hullMax);
+  const shieldWidth =
+    p.shieldMax > 0
+      ? Math.floor((p.shield * (shipW + 2 * shieldThickness)) / p.shieldMax)
+      : 0;
 
-  const isDamaged = startDamage > x;
-
-  const [img, imgDmg, imgShield, imgDmgShield] = shipSprites[p.shipType];
+  const dmgClipL = shipMarginL;
+  const dmgClipR = frame.w - (shipMarginL + dmgWidth);
+  const shieldClipL = shipMarginL + shipW + shieldThickness - shieldWidth;
+  const shieldClipR = frame.w - (shipMarginL + shipW + shieldThickness);
 
   return (
     <div
@@ -92,53 +101,36 @@ export function ShipImage(p: {
         position: "relative",
         width: spritesheet.frames[p.shipType].frame.w,
         height: spritesheet.frames[p.shipType].frame.h,
+        backgroundColor: p.backgroundColor ?? "#FFFFFF",
       }}
     >
-      {/* <SpriteImage
-        spriteId="blank"
-        style={{ position: "absolute", top: 0, left: 0 }}
-      /> */}
-      {isDamaged && startShield > x ? (
+      <SpriteImage
+        spriteId={hullImg}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      />
+      {shieldWidth > 0 ? (
         <SpriteImage
-          spriteId={imgDmg}
+          spriteId={shieldImg}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            clipPath: `inset(0 ${Math.min(startDamage, startShield)}px 0 ${x}px)`,
+            clipPath: `inset(0 ${shieldClipR}px 0 ${shieldClipL}px)`,
           }}
         />
       ) : null}
-      {isDamaged && startShield < startDamage ? (
+      {dmgWidth > 0 ? (
         <SpriteImage
-          spriteId={imgDmgShield}
+          spriteId={dmgImg}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            clipPath: `inset(0 ${startDamage}px 0 ${startShield}px)`,
-          }}
-        />
-      ) : null}
-      {startShield > startDamage ? (
-        <SpriteImage
-          spriteId={img}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            clipPath: `inset(0 ${startShield}px 0 ${startDamage}px)`,
-          }}
-        />
-      ) : null}
-      {startShield < x + w + 2 ? (
-        <SpriteImage
-          spriteId={imgShield}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            clipPath: `inset(0 ${x + w + 2}px 0 ${startShield}px)`,
+            clipPath: `inset(0 ${dmgClipR}px 0 ${dmgClipL}px)`,
           }}
         />
       ) : null}
