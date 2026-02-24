@@ -89,8 +89,34 @@ export function getCrewMemberRate(
   member: CrewMember,
   specialCrewMemberIds: Set<CrewMemberId>,
 ): number {
-  if (specialCrewMemberIds.has(member.id) || member.id === CrewMemberId.Zeethibal) {
+  if (
+    specialCrewMemberIds.has(member.id) ||
+    member.id === CrewMemberId.Zeethibal
+  ) {
     return 0;
   }
-  return (getPilot(member) + getFighter(member) + getTrader(member) + getEngineer(member)) * 3;
+  return (
+    (getPilot(member) +
+      getFighter(member) +
+      getTrader(member) +
+      getEngineer(member)) *
+    3
+  );
+}
+
+export function nthLowestSkill(member: CrewMember, n: number): number {
+  const skillIds = [0, 1, 2, 3];
+
+  // Bubble sort by skill value (ascending)
+  for (let j = 0; j < 3; j++) {
+    for (let i = 0; i < 3 - j; i++) {
+      if (member.skills[skillIds[i]] > member.skills[skillIds[i + 1]]) {
+        const temp = skillIds[i];
+        skillIds[i] = skillIds[i + 1];
+        skillIds[i + 1] = temp;
+      }
+    }
+  }
+
+  return skillIds[n - 1];
 }

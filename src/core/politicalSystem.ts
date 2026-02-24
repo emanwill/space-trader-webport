@@ -1,9 +1,12 @@
 import {
   Activity,
+  Difficulty,
+  OpponentType,
   PoliticalSystemType,
   TechLevel,
   TradeItemType,
 } from "./enums";
+import type { ShipSpec } from "./shipSpec";
 
 export interface PoliticalSystem {
   type: PoliticalSystemType;
@@ -41,4 +44,23 @@ export const politicalSystemNames: Record<PoliticalSystemType, string> = {
 
 export function getPoliticalSystemName(system: PoliticalSystem): string {
   return politicalSystemNames[system.type];
+}
+
+export function shipTypeLikely(
+  polSys: PoliticalSystem,
+  shipSpec: ShipSpec,
+  oppType: OpponentType,
+  difficulty: Difficulty,
+): boolean {
+  const diffMod = Math.max(0, difficulty - Difficulty.Normal);
+  switch (oppType) {
+    case OpponentType.Pirate:
+      return polSys.activityPirates + diffMod >= shipSpec.pirates;
+    case OpponentType.Police:
+      return polSys.activityPolice + diffMod >= shipSpec.police;
+    case OpponentType.Trader:
+      return polSys.activityTraders + diffMod >= shipSpec.traders;
+    default:
+      return false;
+  }
 }

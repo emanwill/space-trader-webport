@@ -7,7 +7,10 @@ import {
   StarSystemId,
   SystemPressure,
   TechLevel,
+  TradeItemType,
 } from "./enums";
+import type { PoliticalSystem } from "./politicalSystem";
+import type { TradeItem } from "./tradeItem";
 
 export interface StarSystem {
   id: StarSystemId;
@@ -159,4 +162,28 @@ export const systemNames: Record<StarSystemId, string> = {
 
 export function getSystemName(system: StarSystem): string {
   return systemNames[system.id];
+}
+
+export function itemTraded(
+  system: StarSystem,
+  item: TradeItem,
+  politicalSystem: PoliticalSystem,
+): boolean {
+  return (
+    (item.type !== TradeItemType.Narcotics || politicalSystem.drugsOk) &&
+    (item.type !== TradeItemType.Firearms || politicalSystem.firearmsOk) &&
+    system.techLevel >= item.techProduction
+  );
+}
+
+export function itemUsed(
+  system: StarSystem,
+  item: TradeItem,
+  politicalSystem: PoliticalSystem,
+): boolean {
+  return (
+    (item.type !== TradeItemType.Narcotics || politicalSystem.drugsOk) &&
+    (item.type !== TradeItemType.Firearms || politicalSystem.firearmsOk) &&
+    system.techLevel >= item.techUsage
+  );
 }

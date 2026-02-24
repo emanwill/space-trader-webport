@@ -1,10 +1,4 @@
-import {
-  Activity,
-  EquipmentType,
-  ShipType,
-  Size,
-  TechLevel,
-} from "./enums";
+import { Activity, EquipmentType, ShipType, Size, TechLevel } from "./enums";
 
 export const HULL_UPGRADE = 50;
 

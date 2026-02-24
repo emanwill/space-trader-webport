@@ -80,11 +80,11 @@ export function getEquipmentName(equipment: Equipment): string {
 // Price helpers
 
 export function sellPrice(equipment: Equipment): number {
-  return Math.trunc(equipment.price * 3 / 4);
+  return Math.trunc((equipment.price * 3) / 4);
 }
 
 export function transferPrice(equipment: Equipment): number {
-  return Math.trunc(sellPrice(equipment) * 110 / 90);
+  return Math.trunc((sellPrice(equipment) * 110) / 90);
 }
 
 // Shield factory (charge defaults to power)
@@ -105,4 +105,13 @@ export function createShield(
     power,
     charge: power,
   };
+}
+
+export function getEquipmentBuyPrice(
+  equipment: Equipment,
+  systemTechLevel: TechLevel,
+  traderSkill: number,
+): number {
+  if (systemTechLevel < equipment.minTech) return 0;
+  return Math.trunc((equipment.price * (100 - traderSkill)) / 100);
 }

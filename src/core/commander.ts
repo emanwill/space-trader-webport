@@ -1,6 +1,7 @@
 import { CrewMemberId, StarSystemId } from "./enums";
 import type { CrewMember } from "./crewMember";
 import type { Ship } from "./ship";
+import { INT_RATE } from "./consts";
 
 export interface Commander extends CrewMember {
   id: CrewMemberId.Commander;
@@ -44,5 +45,19 @@ export function createCommander(
     noClaim: 0,
     ship: null!, // initialized by game setup
     priceCargo: new Array(10).fill(0),
+  };
+}
+
+export function payInterest(commander: Commander): Commander {
+  if (commander.debt <= 0) return commander;
+
+  const interest = Math.max(1, Math.trunc(commander.debt * INT_RATE));
+  if (commander.cash > interest) {
+    return { ...commander, cash: commander.cash - interest };
+  }
+  return {
+    ...commander,
+    debt: commander.debt + (interest - commander.cash),
+    cash: 0,
   };
 }

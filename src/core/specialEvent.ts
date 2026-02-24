@@ -223,7 +223,7 @@ export const specialEventStrings: Record<SpecialEventType, string> = {
   [SpecialEventType.ReactorLaser]:
     "Morgan's technicians are standing by with something that looks a lot like a military laser -- if you ignore the additional cooling vents and anodized ducts. Do you want them to install Morgan's special laser?",
   [SpecialEventType.Scarab]:
-    'Captain Renwick developed a new organic hull material for his ship which cannot be damaged except by Pulse lasers. While he was celebrating this success, pirates boarded and stole the craft, which they have named the Scarab. Rumors suggest it\'s being hidden at the exit to a wormhole. Destroy the ship for a reward!',
+    "Captain Renwick developed a new organic hull material for his ship which cannot be damaged except by Pulse lasers. While he was celebrating this success, pirates boarded and stole the craft, which they have named the Scarab. Rumors suggest it's being hidden at the exit to a wormhole. Destroy the ship for a reward!",
   [SpecialEventType.ScarabDestroyed]:
     "Space Corps is indebted to you for destroying the Scarab and the pirates who stole it. As a reward, we can have Captain Renwick upgrade the hull of your ship. Note that his upgrades won't be transferable if you buy a new ship! Come back with the ship you wish to upgrade.",
   [SpecialEventType.ScarabUpgradeHull]:
@@ -245,7 +245,7 @@ export const specialEventStrings: Record<SpecialEventType, string> = {
   [SpecialEventType.Sculpture]:
     "A hooded figure approaches you and asks if you'd be willing to deliver some recently aquired merchandise to Endor. He's holding a small sculpture of a man holding some kind of light sword that you strongly suspect was stolen. It appears to be made of plastic and not very valuable. \"I'll pay you 2,000 credits now, plus 15,000 on delivery,\" the figure says. After seeing the look on your face he adds, \"It's a collector's item. Will you deliver it or not?\"",
   [SpecialEventType.SculptureDelivered]:
-    "Yet another dark, hooded figure approaches. \"Do you have the action fig- umm, the sculpture?\" You hand it over and hear what sounds very much like a giggle from under the hood. \"I know you were promised 15,000 credits on delivery, but I'm strapped for cash right now. However, I have something better for you. I have an acquaintance who can install hidden compartments in your ship.\" Return with an empty gadget slot when you're ready to have it installed.",
+    'Yet another dark, hooded figure approaches. "Do you have the action fig- umm, the sculpture?" You hand it over and hear what sounds very much like a giggle from under the hood. "I know you were promised 15,000 credits on delivery, but I\'m strapped for cash right now. However, I have something better for you. I have an acquaintance who can install hidden compartments in your ship." Return with an empty gadget slot when you\'re ready to have it installed.',
   [SpecialEventType.SculptureHiddenBays]:
     "You're taken to a warehouse and whisked through the door. A grubby alien of some humanoid species - you're not sure which one - approaches. \"So you're the being who needs Hidden Compartments. Should I install them in your ship?\" (It requires a free gadget slot.)",
   [SpecialEventType.Princess]:
@@ -259,7 +259,7 @@ export const specialEventStrings: Record<SpecialEventType, string> = {
   [SpecialEventType.PrincessQuantum]:
     "His Majesty's Shipyard: Do you want us to install a quantum disruptor on your current ship?",
   [SpecialEventType.PrincessReturned]:
-    "The King and Queen are extremely grateful to you for returning their daughter to them. The King says, \"Ziyal is priceless to us, but we feel we must offer you something as a reward. Visit my shipyard captain and he'll install one of our new Quantum Disruptors.\"",
+    'The King and Queen are extremely grateful to you for returning their daughter to them. The King says, "Ziyal is priceless to us, but we feel we must offer you something as a reward. Visit my shipyard captain and he\'ll install one of our new Quantum Disruptors."',
 };
 
 export function getSpecialEventTitle(type: SpecialEventType): string {
