@@ -9,7 +9,7 @@
 - **TradeItem.StandardPrice(StarSystem)** — pricing logic depending on `StarSystem` properties (techLevel, politicalSystem, size, specialResource); port alongside trade system
 - **Equipment.Price** (computed buy price) — accesses `Game.CurrentGame.Commander` for tech level check and trader skill discount; port alongside shop/trade UI
 - **Equipment.Image / BaseImageIndex** — WinForms UI image loading; replace with web asset system
-- **ShipSpec.SetValues(ShipType)** — copies fields from `Consts.ShipSpecs[type]`; port alongside Consts registry
+- **ShipSpec.SetValues(ShipType)** — copies fields from `shipSpecs[type]`; now possible since consts.ts exists, port alongside ship creation logic
 - **ShipSpec.Image / ImageDamaged / ImageWithShields / ImageDamagedWithShields / ImageIndex** — WinForms image system; replace with web assets
 - **ShipSpec custom ship deserialization** — modifies global `Consts.ShipSpecs` and `Strings.ShipNames`; needs redesign for immutable state
 - **ShipSpec.UpdateCustomImageOffsetConstants** — pixel scanning for custom ship images; WinForms-specific
@@ -44,5 +44,5 @@
 - Ship.cs — ported
 - StarSystem.cs — ported
 - Shipyard.cs — ported
-- Consts.cs (data registry — depends on most other models)
-- Game.cs (central game state)
+- Consts.cs — ported
+- Game.cs — state interface ported (GameState, EncounterState); ~65 game logic methods deferred
