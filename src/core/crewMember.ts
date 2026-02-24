@@ -1,4 +1,5 @@
 import { CrewMemberId, SkillType, StarSystemId } from "./enums";
+import type { StarSystem } from "./starSystem";
 
 export interface CrewMember {
   id: CrewMemberId;
@@ -102,6 +103,14 @@ export function getCrewMemberRate(
       getEngineer(member)) *
     3
   );
+}
+
+export function getCrewMemberCurrentSystem(
+  member: CrewMember,
+  universe: StarSystem[],
+): StarSystem | null {
+  if (member.currentSystemId === StarSystemId.NA) return null;
+  return universe[member.currentSystemId] ?? null;
 }
 
 export function nthLowestSkill(member: CrewMember, n: number): number {

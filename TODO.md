@@ -22,26 +22,39 @@ Ported in `src/core/functions.ts` and `src/core/shipFunctions.ts`, plus addition
   - Valuation: getBaseWorth, getBounty
   - Mutations: addEquipment, removeEquipmentBySlot, removeEquipmentByType
 
-## Phase 2+: Remaining Game Logic
+## Phase 2: Game State Queries — COMPLETE
 
-- **PoliceRecord.GetPoliceRecordFromScore** — ported as a standalone function taking the records array as a parameter, but callers will need to supply `Consts.PoliceRecords` and the commander's score
-- **Reputation.GetReputationFromScore** — same pattern as above
-- **SpecialEvent.Location** — searches `Game.CurrentGame.Universe` for a system matching the event type; belongs in game logic, not the data model
+Ported in `src/core/gameQueries.ts` plus additions to existing model files.
+
+### Ported
+
+- **PoliceRecord.GetPoliceRecordFromScore** — already ported in `src/core/policeRecord.ts`
+- **Reputation.GetReputationFromScore** — already ported in `src/core/reputation.ts`
+- **Game.CountDownStart / InsuranceCosts / InterestCosts / MercenaryCosts / WormholeCosts / CurrentCosts** — ported to `src/core/gameQueries.ts`
+- **Game.Score** — ported as `getScore` in `src/core/gameQueries.ts`
+- **Game.Destinations** — ported as `getDestinations` in `src/core/gameQueries.ts`
+- **Game.SelectedSystemName** (search) — ported as `findSystemByName` in `src/core/gameQueries.ts`
+- **Commander.Worth** — ported as `getCommanderWorth` in `src/core/commander.ts`
+- **Commander.CashToSpend** — ported as `getCashToSpend` in `src/core/commander.ts`
+- **Ship.Worth** — ported as `getShipWorth` in `src/core/shipFunctions.ts`
+- **StarSystem.DestOk / Distance / MercenariesForHire** — ported to `src/core/starSystem.ts`
+- **CrewMember.CurrentSystem** — ported as `getCrewMemberCurrentSystem` in `src/core/crewMember.ts`
+- **SpecialEvent.Location** — ported as `getSpecialEventLocation` in `src/core/specialEvent.ts`
+
+## Phase 3+: Remaining Game Logic
+
 - **Equipment.Image / BaseImageIndex** — WinForms UI image loading; replace with web asset system
 - **ShipSpec.SetValues(ShipType)** — copies fields from `shipSpecs[type]`; now possible since consts.ts exists, port alongside ship creation logic
 - **ShipSpec.Image / ImageDamaged / ImageWithShields / ImageDamagedWithShields / ImageIndex** — WinForms image system; replace with web assets
 - **ShipSpec custom ship deserialization** — modifies global `Consts.ShipSpecs` and `Strings.ShipNames`; needs redesign for immutable state
 - **ShipSpec.UpdateCustomImageOffsetConstants** — pixel scanning for custom ship images; WinForms-specific
 - **CrewMember.ChangeRandomSkill / IncreaseRandomSkill / TonicTweakRandomSkill** — mutate skills and access `Game.CurrentGame` for recalculating buy prices; port as game logic functions
-- **CrewMember.CurrentSystem** (getter) — resolves `StarSystemId` to `StarSystem` via `Game.CurrentGame.Universe`; becomes a lookup function
 - **Commander.TradeShip** — complex ship purchase logic with UI alerts; port alongside shipyard UI
-- **Commander.CashToSpend** — accesses `Game.CurrentGame.Options.ReserveMoney` and `Game.CurrentGame.CurrentCosts`
-- **Commander.Worth** — accesses `Game.CurrentGame.QuestStatusMoon`; port as a computed function
 - **Ship opponent generation methods** — CreateFlea, CreateOpponent, etc.; port alongside encounter system
 - **StarSystem.InitializeTradeItems** — accesses `Game.CurrentGame.Difficulty` and `Consts.TradeItems`; port alongside universe generation
 - **StarSystem.ShowSpecialButton** — large switch accessing game state; port alongside event UI
-- **StarSystem.DestOk / Distance / MercenariesForHire** — access `Game.CurrentGame.Commander`; port as computed functions
 - **Shipyard** — all computed properties (AdjustedPrice, PenaltyCost, UnitsUsed, TotalCost, TradeIn, etc.) operate on `Consts.ShipSpecs[Custom]` and `Game.CurrentGame.Commander`; port alongside custom ship builder UI
+- **Game.cs ~65 methods** — encounter system, travel, trading, events, initialization
 
 ## String Lookups from Strings.cs (not yet ported)
 

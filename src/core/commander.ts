@@ -2,6 +2,7 @@ import { CrewMemberId, StarSystemId } from "./enums";
 import type { CrewMember } from "./crewMember";
 import type { Ship } from "./ship";
 import { INT_RATE } from "./consts";
+import { MOON_COST, MoonStatus } from "./specialEvent";
 
 export interface Commander extends CrewMember {
   id: CrewMemberId.Commander;
@@ -46,6 +47,26 @@ export function createCommander(
     ship: null!, // initialized by game setup
     priceCargo: new Array(10).fill(0),
   };
+}
+
+export function getCommanderWorth(
+  commander: Commander,
+  questStatusMoon: MoonStatus,
+): number {
+  return (
+    commander.ship.price +
+    commander.cash -
+    commander.debt +
+    (questStatusMoon > 0 ? MOON_COST : 0)
+  );
+}
+
+export function getCashToSpend(
+  cash: number,
+  reserveMoney: boolean,
+  currentCosts: number,
+): number {
+  return cash - (reserveMoney ? currentCosts : 0);
 }
 
 export function payInterest(commander: Commander): Commander {

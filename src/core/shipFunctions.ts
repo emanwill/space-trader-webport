@@ -342,6 +342,18 @@ export function getBaseWorth(ship: Ship, forInsurance: boolean): number {
   return price;
 }
 
+export function getShipWorth(
+  ship: Ship,
+  priceCargo: number[],
+  forInsurance: boolean,
+): number {
+  let price = getBaseWorth(ship, forInsurance);
+  for (let i = 0; i < priceCargo.length; i++) {
+    price += priceCargo[i];
+  }
+  return price;
+}
+
 /**
  * Compute bounty for a ship. Callers supply effective skill values
  * (pilot, fighter, engineer) from getShipSkills.

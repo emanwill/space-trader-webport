@@ -1,4 +1,5 @@
 import { SpecialEventType } from "./enums";
+import type { StarSystem } from "./starSystem";
 
 // Quest status enums
 
@@ -268,4 +269,14 @@ export function getSpecialEventTitle(type: SpecialEventType): string {
 
 export function getSpecialEventString(type: SpecialEventType): string {
   return specialEventStrings[type];
+}
+
+export function getSpecialEventLocation(
+  eventType: SpecialEventType,
+  universe: StarSystem[],
+): StarSystem | null {
+  for (const system of universe) {
+    if (system.specialEventType === eventType) return system;
+  }
+  return null;
 }

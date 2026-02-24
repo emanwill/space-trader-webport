@@ -9,8 +9,11 @@ import {
   TechLevel,
   TradeItemType,
 } from "./enums";
+import type { CrewMember } from "./crewMember";
 import type { PoliticalSystem } from "./politicalSystem";
 import type { TradeItem } from "./tradeItem";
+import { CrewMemberId } from "./enums";
+import { distance, wormholeExists } from "./functions";
 
 export interface StarSystem {
   id: StarSystemId;
@@ -162,6 +165,40 @@ export const systemNames: Record<StarSystemId, string> = {
 
 export function getSystemName(system: StarSystem): string {
   return systemNames[system.id];
+}
+
+export function getSystemDistance(
+  system: StarSystem,
+  currentSystem: StarSystem,
+): number {
+  return distance(system, currentSystem);
+}
+
+export function isDestOk(
+  system: StarSystem,
+  currentSystem: StarSystem,
+  fuel: number,
+  wormholes: number[],
+): boolean {
+  return (
+    system !== currentSystem &&
+    (getSystemDistance(system, currentSystem) <= fuel ||
+      wormholeExists(wormholes, currentSystem.id, system.id))
+  );
+}
+
+export function getMercenariesForHire(
+  currentSystem: StarSystem,
+  mercenaries: CrewMember[],
+  shipCrewIds: CrewMemberId[],
+): CrewMember[] {
+  return mercenaries.filter(
+    (m) =>
+      m.id !== CrewMemberId.NA &&
+      m.id !== CrewMemberId.Commander &&
+      m.currentSystemId === currentSystem.id &&
+      !shipCrewIds.includes(m.id),
+  );
 }
 
 export function itemTraded(
