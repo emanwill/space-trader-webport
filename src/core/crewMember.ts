@@ -1,5 +1,7 @@
-import { CrewMemberId, SkillType, StarSystemId } from "./enums";
+import { CrewMemberId, Difficulty, SkillType, StarSystemId } from "./enums";
 import type { StarSystem } from "./starSystem";
+import { MAX_SKILL } from "./consts";
+import { getRandom } from "./functions";
 
 export interface CrewMember {
   id: CrewMemberId;
@@ -128,4 +130,52 @@ export function nthLowestSkill(member: CrewMember, n: number): number {
   }
 
   return skillIds[n - 1];
+}
+
+export function changeRandomSkill(
+  member: CrewMember,
+  amount: number,
+): CrewMember {
+  const eligible: number[] = [];
+  for (let i = 0; i < member.skills.length; i++) {
+    if (member.skills[i] + amount > 0 && member.skills[i] + amount < MAX_SKILL)
+      eligible.push(i);
+  }
+
+  if (eligible.length === 0) return member;
+
+  const skill = eligible[getRandom(eligible.length)];
+  const newSkills = [...member.skills];
+  newSkills[skill] += amount;
+  return { ...member, skills: newSkills };
+}
+
+export function increaseRandomSkill(member: CrewMember): CrewMember {
+  return changeRandomSkill(member, 1);
+}
+
+export function tonicTweakRandomSkill(
+  member: CrewMember,
+  difficulty: Difficulty,
+): CrewMember {
+  if (difficulty < Difficulty.Hard) {
+    // Add one, subtract one — loop until at least one skill changed
+    const original = member.skills;
+    let result = member;
+    do {
+      result = changeRandomSkill(changeRandomSkill(result, 1), -1);
+    } while (
+      result.skills[0] === original[0] &&
+      result.skills[1] === original[1] &&
+      result.skills[2] === original[2] &&
+      result.skills[3] === original[3]
+    );
+    return result;
+  } else {
+    // Add one twice, subtract three once
+    let result = changeRandomSkill(member, 1);
+    result = changeRandomSkill(result, 1);
+    result = changeRandomSkill(result, -3);
+    return result;
+  }
 }

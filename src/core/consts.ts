@@ -1393,3 +1393,14 @@ export const equipmentForSale: Equipment[] = [
   gadgets[GadgetType.TargetingSystem],
   gadgets[GadgetType.CloakingDevice],
 ];
+
+// Ordered arrays derived from Records (for indexed iteration)
+
+export const weaponsArray: WeaponEquipment[] = Object.values(weapons);
+export const shieldsArray: ShieldEquipment[] = Object.values(shields);
+export const gadgetsArray: GadgetEquipment[] = Object.values(gadgets);
+export const politicalSystemsArray: PoliticalSystem[] =
+  Object.values(politicalSystems);
+export const shipSpecsArray: ShipSpec[] = Object.values(shipSpecs);
+export const tradeItemsArray: TradeItem[] = Object.values(tradeItems);
+export const specialEventsArray: SpecialEvent[] = Object.values(specialEvents);

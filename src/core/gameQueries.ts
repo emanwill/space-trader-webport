@@ -3,8 +3,18 @@ import { getCrewMemberRate } from "./crewMember";
 import type { StarSystem } from "./starSystem";
 import { isDestOk } from "./starSystem";
 import { CrewMemberId, Difficulty, GameEndType, StarSystemId } from "./enums";
-import { INS_RATE, INT_RATE, WORM_DIST } from "./consts";
-import { wormholeExists } from "./functions";
+import {
+  INS_RATE,
+  INT_RATE,
+  MAX_SKILL,
+  POLICE_RECORD_SCORE_DUBIOUS,
+  WORM_DIST,
+} from "./consts";
+import { itemTraded } from "./starSystem";
+import type { PoliticalSystem } from "./politicalSystem";
+import type { TradeItem } from "./tradeItem";
+import { standardPrice } from "./tradeItem";
+import { getRandom, wormholeExists } from "./functions";
 
 // ---------------------------------------------------------------------------
 // Cost calculations
@@ -137,4 +147,87 @@ export function findSystemByName(
     }
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Price calculations
+// ---------------------------------------------------------------------------
+
+export function recalculateBuyPrices(
+  system: StarSystem,
+  tradeItems: TradeItem[],
+  politicalSystem: PoliticalSystem,
+  sellPrices: number[],
+  policeRecordScore: number,
+  traderSkill: number,
+): number[] {
+  const buy: number[] = new Array(tradeItems.length).fill(0);
+
+  for (let i = 0; i < tradeItems.length; i++) {
+    if (!itemTraded(system, tradeItems[i], politicalSystem)) {
+      buy[i] = 0;
+    } else {
+      buy[i] = sellPrices[i];
+
+      if (policeRecordScore < POLICE_RECORD_SCORE_DUBIOUS) {
+        buy[i] = Math.trunc((buy[i] * 100) / 90);
+      }
+
+      // BuyPrice = SellPrice + 1 to 12% (depending on trader skill)
+      buy[i] = Math.trunc((buy[i] * (103 + MAX_SKILL - traderSkill)) / 100);
+
+      if (buy[i] <= sellPrices[i]) {
+        buy[i] = sellPrices[i] + 1;
+      }
+    }
+  }
+
+  return buy;
+}
+
+export function recalculateSellPrices(sellPrices: number[]): number[] {
+  return sellPrices.map((p) => Math.trunc((p * 100) / 90));
+}
+
+export function calculatePrices(
+  system: StarSystem,
+  tradeItems: TradeItem[],
+  politicalSystem: PoliticalSystem,
+  policeRecordScore: number,
+  traderSkill: number,
+): { buy: number[]; sell: number[] } {
+  const sell: number[] = new Array(tradeItems.length).fill(0);
+
+  for (let i = 0; i < tradeItems.length; i++) {
+    let price = standardPrice(tradeItems[i], system, politicalSystem);
+
+    if (price > 0) {
+      // Adapt price for system pressure
+      if (tradeItems[i].pressurePriceHike === system.systemPressure) {
+        price = Math.trunc((price * 3) / 2);
+      }
+
+      // Randomize price within variance
+      const variance = Math.min(tradeItems[i].priceVariance, price - 1);
+      price = price + getRandom(-variance, variance + 1);
+
+      // Criminals pay less (intermediary cost)
+      if (policeRecordScore < POLICE_RECORD_SCORE_DUBIOUS) {
+        price = Math.trunc((price * 90) / 100);
+      }
+    }
+
+    sell[i] = price;
+  }
+
+  const buy = recalculateBuyPrices(
+    system,
+    tradeItems,
+    politicalSystem,
+    sell,
+    policeRecordScore,
+    traderSkill,
+  );
+
+  return { buy, sell };
 }

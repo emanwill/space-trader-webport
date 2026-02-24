@@ -12,8 +12,8 @@ import {
 import type { CrewMember } from "./crewMember";
 import type { PoliticalSystem } from "./politicalSystem";
 import type { TradeItem } from "./tradeItem";
-import { CrewMemberId } from "./enums";
-import { distance, wormholeExists } from "./functions";
+import { CrewMemberId, Difficulty } from "./enums";
+import { distance, getRandom, wormholeExists } from "./functions";
 
 export interface StarSystem {
   id: StarSystemId;
@@ -223,4 +223,48 @@ export function itemUsed(
     (item.type !== TradeItemType.Firearms || politicalSystem.firearmsOk) &&
     system.techLevel >= item.techUsage
   );
+}
+
+export function initializeTradeItems(
+  system: StarSystem,
+  tradeItems: TradeItem[],
+  politicalSystem: PoliticalSystem,
+  difficulty: Difficulty,
+): number[] {
+  const items: number[] = new Array(tradeItems.length).fill(0);
+
+  for (let i = 0; i < tradeItems.length; i++) {
+    if (!itemTraded(system, tradeItems[i], politicalSystem)) {
+      items[i] = 0;
+    } else {
+      items[i] =
+        (system.size + 1) *
+        (getRandom(9, 14) -
+          Math.abs(tradeItems[i].techTopProduction - system.techLevel));
+
+      // Reduce narcotics and robots based on difficulty
+      if (i >= TradeItemType.Narcotics) {
+        items[i] =
+          Math.trunc((items[i] * (5 - difficulty)) / (6 - difficulty)) + 1;
+      }
+
+      if (system.specialResource === tradeItems[i].resourceLowPrice) {
+        items[i] = Math.trunc((items[i] * 4) / 3);
+      }
+
+      if (system.specialResource === tradeItems[i].resourceHighPrice) {
+        items[i] = Math.trunc((items[i] * 3) / 4);
+      }
+
+      if (system.systemPressure === tradeItems[i].pressurePriceHike) {
+        items[i] = Math.trunc(items[i] / 5);
+      }
+
+      items[i] = items[i] - getRandom(10) + getRandom(10);
+
+      if (items[i] < 0) items[i] = 0;
+    }
+  }
+
+  return items;
 }

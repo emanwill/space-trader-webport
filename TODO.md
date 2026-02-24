@@ -41,20 +41,30 @@ Ported in `src/core/gameQueries.ts` plus additions to existing model files.
 - **CrewMember.CurrentSystem** — ported as `getCrewMemberCurrentSystem` in `src/core/crewMember.ts`
 - **SpecialEvent.Location** — ported as `getSpecialEventLocation` in `src/core/specialEvent.ts`
 
-## Phase 3+: Remaining Game Logic
+## Phase 3: Initialization & Setup — COMPLETE
+
+Ported in `src/core/opponentGeneration.ts` and `src/core/gameInit.ts`, plus additions to existing model files.
+
+### Ported
+
+- **CrewMember.ChangeRandomSkill / IncreaseRandomSkill / TonicTweakRandomSkill** — ported to `src/core/crewMember.ts`
+- **StarSystem.InitializeTradeItems** — ported to `src/core/starSystem.ts`
+- **Game.CalculatePrices / RecalculateBuyPrices / RecalculateSellPrices** — ported to `src/core/gameQueries.ts`
+- **Ship.GenerateOpponent* (8 methods)** — ported to `src/core/opponentGeneration.ts`:
+  - selectOpponentShipType, addOpponentCrew, addOpponentCargo, addOpponentWeapons, addOpponentShields, addOpponentGadgets, setOpponentHullStrength, generateOpponent
+- **Game.GenerateUniverse / GenerateCrewMemberList / FindDistantSystem / PlaceShipyards / PlaceSpecialEvents / ResetVeryRareEncounters / InitializeNewGame** — ported to `src/core/gameInit.ts`
+- **Ordered array exports** — added `weaponsArray`, `shieldsArray`, `gadgetsArray`, `politicalSystemsArray`, `shipSpecsArray`, `tradeItemsArray`, `specialEventsArray` to `src/core/consts.ts`
+
+## Phase 4+: Remaining Game Logic
 
 - **Equipment.Image / BaseImageIndex** — WinForms UI image loading; replace with web asset system
-- **ShipSpec.SetValues(ShipType)** — copies fields from `shipSpecs[type]`; now possible since consts.ts exists, port alongside ship creation logic
 - **ShipSpec.Image / ImageDamaged / ImageWithShields / ImageDamagedWithShields / ImageIndex** — WinForms image system; replace with web assets
 - **ShipSpec custom ship deserialization** — modifies global `Consts.ShipSpecs` and `Strings.ShipNames`; needs redesign for immutable state
 - **ShipSpec.UpdateCustomImageOffsetConstants** — pixel scanning for custom ship images; WinForms-specific
-- **CrewMember.ChangeRandomSkill / IncreaseRandomSkill / TonicTweakRandomSkill** — mutate skills and access `Game.CurrentGame` for recalculating buy prices; port as game logic functions
 - **Commander.TradeShip** — complex ship purchase logic with UI alerts; port alongside shipyard UI
-- **Ship opponent generation methods** — CreateFlea, CreateOpponent, etc.; port alongside encounter system
-- **StarSystem.InitializeTradeItems** — accesses `Game.CurrentGame.Difficulty` and `Consts.TradeItems`; port alongside universe generation
 - **StarSystem.ShowSpecialButton** — large switch accessing game state; port alongside event UI
 - **Shipyard** — all computed properties (AdjustedPrice, PenaltyCost, UnitsUsed, TotalCost, TradeIn, etc.) operate on `Consts.ShipSpecs[Custom]` and `Game.CurrentGame.Commander`; port alongside custom ship builder UI
-- **Game.cs ~65 methods** — encounter system, travel, trading, events, initialization
+- **Game.cs ~50 methods** — encounter system, travel, trading, events
 
 ## String Lookups from Strings.cs (not yet ported)
 
