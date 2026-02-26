@@ -1,5 +1,6 @@
 # space-trader-webport
 
-# TODOS
+# Architectural Notes
 
-TLV encoding for saves?
+- Zustand for managing game state
+- Game logic functions return new state objects rather than mutating inputs

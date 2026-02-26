@@ -60,7 +60,7 @@ const shipImageOffsets: {
   ship8: [2, 0, 60, 0], // termite
   ship9: [2, 0, 60, 0], // wasp
   sm: [7, 0, 49, 0], // space monster
-  df: [21, 0, 22, 0], // dragonfly (shield is +16 to either side)
+  df: [21, 0, 22, 0], // dragonfly (note: shield graphic has 16px 'thickness')
   mantis: [15, 0, 34, 0], // mantis
   scarab: [7, 0, 49, 0], // scarab
   bottle: [9, 0, 46, 0], // bottle
@@ -145,68 +145,3 @@ export function ShipImage(p: {
     </div>
   );
 }
-
-/*
-"smd"
-"sm"
-"ship10sd"
-"ship10s"
-"ship10d"
-"ship10"
-"ship9sd"
-"ship9s"
-"ship9d"
-"ship9"
-"ship8sd"
-"ship8s"
-"ship8d"
-"ship8"
-"ship7sd"
-"ship7s"
-"ship7d"
-"ship7"
-"ship6sd"
-"ship6s"
-"ship6d"
-"ship6"
-"ship5sd"
-"ship5s"
-"ship5d"
-"ship5"
-"ship4sd"
-"ship4s"
-"ship4d"
-"ship4"
-"ship3sd"
-"ship3s"
-"ship3d"
-"ship3"
-"ship2sd"
-"ship2s"
-"ship2d"
-"ship2"
-"ship1d"
-"ship1"
-"ship0d"
-"ship0"
-"scorpsd"
-"scorps"
-"scorpd"
-"scorp"
-"scarabsd"
-"scarabs"
-"scarabd"
-"scarab"
-"mantissd"
-"mantiss"
-"mantisd"
-"mantis"
-"dummy_ship"
-"dfsd"
-"dfs"
-"dfd"
-"df"
-"bottled"
-"bottle"
-"blank"
-*/
