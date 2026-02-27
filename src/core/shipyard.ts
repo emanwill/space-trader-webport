@@ -7,7 +7,7 @@ export interface Shipyard {
 }
 
 export const shipyardNames: Record<ShipyardId, string> = {
-  [ShipyardId.NA]: "",
+  [ShipyardId.NA]: "??SHIPYARD??",
   [ShipyardId.Corellian]: "Corellian Engineering",
   [ShipyardId.Incom]: "Incom Corporation",
   [ShipyardId.Kuat]: "Kuat Drive Yards",
@@ -16,7 +16,7 @@ export const shipyardNames: Record<ShipyardId, string> = {
 };
 
 export const shipyardEngineers: Record<ShipyardId, string> = {
-  [ShipyardId.NA]: "",
+  [ShipyardId.NA]: "??SHIPYARD_ENGINEER??",
   [ShipyardId.Corellian]: "Wedge",
   [ShipyardId.Incom]: "Luke",
   [ShipyardId.Kuat]: "Lando",

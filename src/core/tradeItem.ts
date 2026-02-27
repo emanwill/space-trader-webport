@@ -24,7 +24,7 @@ export interface TradeItem {
 }
 
 export const tradeItemNames: Record<TradeItemType, string> = {
-  [TradeItemType.NA]: "",
+  [TradeItemType.NA]: "??TRADE_ITEM??",
   [TradeItemType.Water]: "Water",
   [TradeItemType.Furs]: "Furs",
   [TradeItemType.Food]: "Food",

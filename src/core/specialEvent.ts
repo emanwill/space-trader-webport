@@ -118,7 +118,7 @@ export interface SpecialEvent {
 // String lookups
 
 export const specialEventTitles: Record<SpecialEventType, string> = {
-  [SpecialEventType.NA]: "",
+  [SpecialEventType.NA]: "??SPECIAL_EVENT??",
   [SpecialEventType.Artifact]: "Alien Artifact",
   [SpecialEventType.ArtifactDelivery]: "Artifact Delivery",
   [SpecialEventType.CargoForSale]: "Cargo For Sale",
@@ -168,7 +168,7 @@ export const specialEventTitles: Record<SpecialEventType, string> = {
 };
 
 export const specialEventStrings: Record<SpecialEventType, string> = {
-  [SpecialEventType.NA]: "",
+  [SpecialEventType.NA]: "??SPECIAL_EVENT_MSG??",
   [SpecialEventType.Artifact]:
     "This alien artifact should be delivered to professor Berger, who is currently traveling. You can probably find him at a hi-tech solar system. The alien race which produced this artifact seems keen on getting it back, however, and may hinder the carrier. Are you, for a price, willing to deliver it?",
   [SpecialEventType.ArtifactDelivery]:

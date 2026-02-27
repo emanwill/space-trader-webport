@@ -10,7 +10,7 @@ export interface CrewMember {
 }
 
 export const crewMemberNames: Record<CrewMemberId, string> = {
-  [CrewMemberId.NA]: "",
+  [CrewMemberId.NA]: "??CREW_MEMBER??",
   [CrewMemberId.Commander]: "Commander",
   [CrewMemberId.Alyssa]: "Alyssa",
   [CrewMemberId.Armatur]: "Armatur",
